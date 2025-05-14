@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>命中率計算器 - 楓之谷法師版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>命中率計算器</title>
   <style>
     body {
-      background-image: url('https://i.imgur.com/fmBnTqd.jpg'); /* 楓之谷森林風背景圖 */;
+      background-image: url('https://i.imgur.com/tXgzDYO.jpeg');
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
@@ -35,12 +35,6 @@
 
     .input-group {
       margin-bottom: 15px;
-    }
-
-    .input-group img {
-      width: 24px;
-      vertical-align: middle;
-      margin-right: 8px;
     }
 
     label {
@@ -91,49 +85,43 @@
 <body>
   <div class="container">
     <h2>命中率計算器</h2>
-
     <div class="input-group">
-      <label><img src="https://i.imgur.com/bbUap1X.png" alt="Int">角色智力</label>
-      <input type="number" id="intelligence" />
+      <label for="int">角色智力</label>
+      <input type="number" id="int" placeholder="請輸入角色智力">
     </div>
-
     <div class="input-group">
-      <label><img src="https://i.imgur.com/sBP66NS.png" alt="Luck">角色幸運</label>
-      <input type="number" id="luck" />
+      <label for="luk">角色幸運</label>
+      <input type="number" id="luk" placeholder="請輸入角色幸運">
     </div>
-
     <div class="input-group">
-      <label><img src="https://i.imgur.com/Vnz2r2X.png" alt="Evasion">怪物迴避值</label>
-      <input type="number" id="evasion" />
+      <label for="eva">怪物迴避值</label>
+      <input type="number" id="eva" placeholder="請輸入怪物迴避值">
     </div>
-
     <div class="input-group">
-      <label><img src="https://i.imgur.com/OrrqzME.png" alt="Monster Lv">怪物等級</label>
-      <input type="number" id="monsterLevel" />
+      <label for="mobLevel">怪物等級</label>
+      <input type="number" id="mobLevel" placeholder="請輸入怪物等級">
     </div>
-
     <div class="input-group">
-      <label><img src="https://i.imgur.com/Vnax2Bb.png" alt="Character Lv">角色等級</label>
-      <input type="number" id="characterLevel" />
+      <label for="charLevel">角色等級</label>
+      <input type="number" id="charLevel" placeholder="請輸入角色等級">
     </div>
-
     <button onclick="calculate()">計算命中率</button>
     <div id="result"></div>
   </div>
 
   <script>
     function calculate() {
-      const int = parseFloat(document.getElementById("intelligence").value);
-      const luck = parseFloat(document.getElementById("luck").value);
-      const evasion = parseFloat(document.getElementById("evasion").value);
-      const monsterLv = parseFloat(document.getElementById("monsterLevel").value);
-      const charLv = parseFloat(document.getElementById("characterLevel").value);
+      const int = parseFloat(document.getElementById('int').value) || 0;
+      const luk = parseFloat(document.getElementById('luk').value) || 0;
+      const eva = parseFloat(document.getElementById('eva').value) || 0;
+      const mobLv = parseFloat(document.getElementById('mobLevel').value) || 0;
+      const charLv = parseFloat(document.getElementById('charLevel').value) || 0;
 
-      const levelDiff = monsterLv - charLv;
-      const hitRate = (((int + luck) / 10) / ((evasion + 1) * (1 + 0.04 * levelDiff))) * 100;
-      const clampedRate = Math.max(0, Math.min(100, hitRate)); // 限制範圍在 0~100%
+      const numerator = (int + luk) / 10;
+      const denominator = (eva + 1) * (1 + 0.04 * (mobLv - charLv));
+      const accuracy = Math.max(0, Math.min(100, (numerator / denominator) * 100)).toFixed(2);
 
-      document.getElementById("result").innerText = `命中率為：${clampedRate.toFixed(2)}%`;
+      document.getElementById('result').innerText = `命中率：${accuracy}%`;
     }
   </script>
 </body>
